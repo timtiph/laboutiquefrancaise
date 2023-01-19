@@ -1,0 +1,26 @@
+{
+  "name": "laboutiquefrancaise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timtiph/laboutiquefrancaise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timtiph/laboutiquefrancaise/issues"
+  },
+  "homepage": "https://github.com/timtiph/laboutiquefrancaise#readme",
+  "dependencies": {
+    "sass": "^1.57.1"
+  }
+}
