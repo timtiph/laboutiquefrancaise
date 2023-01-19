@@ -19,4 +19,8 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
+###< npm
 /node_modules
+
+### .env
+.env
