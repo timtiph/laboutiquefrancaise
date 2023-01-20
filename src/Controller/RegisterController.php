@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class RegisterController extends AbstractController
@@ -22,7 +23,7 @@ class RegisterController extends AbstractController
     
     #[Route('/inscription', name: 'app_register')]
 
-    public function index(Request $request, PersistenceManagerRegistry $doctrine ): Response
+    public function index(Request $request, PersistenceManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher ): Response
     {
         // Création du formulaire pour la page register
 
@@ -38,7 +39,12 @@ class RegisterController extends AbstractController
 
             $user = $form->getData(); // injecte dans obj $user toutes les données récup dans $form
 
-            // dd($user); //dd = varDumpDie
+            // Hasher le password
+            $password = $passwordHasher->hashPassword($user, $user->getPassword());
+
+            // dd($password); //dd = varDumpDie
+            
+            $user->setPassword($password);
 
             // pour enregistrer les infos dans la base avec doctrine
             $entityManager = $doctrine->getManager();
