@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+{# intégration du CSS bootstrap => voir : https://symfony.com/doc/current/form/bootstrap5.html
+
+normalement, devrait pouvoir etre intégré dans twig.yaml mais ça ne fonctionne pas ici
+# config/packages/twig.yaml
+twig:
+    form_themes: ['bootstrap_5_layout.html.twig'] #}
+
+{% block content %}
+
+<h1>Inscription</h1>
+
+
+{# récupération du formulaire créé sous src/Controller/RegisterController.php 
+Appel d'une variable construite par la méthode form, et en appelant form du RegisterController
+#}
+
+{{form(form)}}
+
+{# Formulaire généré par src/Form/RegisterType.php. Les champs sont directement intégrer à cette vue depuis le registerType. Permet le management du formulaire
+Pour améliorer le CSS : <https://symfony.com/doc/current/forms.html #}
+
+{% endblock %}
