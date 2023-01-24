@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/timtiph/laboutiquefrancaise#readme",
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "sass": "^1.57.1"
   }
 }
