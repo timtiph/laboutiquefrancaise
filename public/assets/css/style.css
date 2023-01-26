@@ -1,6 +1,8 @@
 body {
     position: relative;
+    min-height: 100vh;
 }
+
 .navbar-itme-custom, .navbar-itme-custom > a {
     color: white;
 
