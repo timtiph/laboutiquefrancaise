@@ -29,4 +29,10 @@
 /reqSQL
 
 ### Brouillon html
-templates/index.html
+/templates/index.html
+
+### dossier photos/illustrations
+/public/assets/illustration
+
+### dossier photos uploads
+/public/uploads
