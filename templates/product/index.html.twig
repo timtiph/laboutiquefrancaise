@@ -5,34 +5,46 @@
 
 {% block content %}
 
+	<div class="row">
 
-	<h1>
-		Nos Produits
-	</h1>
+			{# SECTION FILTRER #}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+        <div class="col-md-3">
+        <h3>Filtrer</h3>
+        {{ form(form) }}
+        </div>
 
+            {# SECTION PRODUITS #}
+        <div class="col-md-9">
+              
+                <h3>Nos Produits</h3>
 
-	<div class="row product-container">
-		
-        {% for product in products %}
-			
-            <div class="col-md-4">
+                <div class="row product-container">
+                    
+                    {% for product in products %}
+                        
+                        <div class="col-md-4">
 
-                <div class="product-item text-center">
+                            <div class="product-item text-center">
 
-				    <a href="{{ path('app_product', { 'slug' : product.slug} ) }}">
-                        <img src="/uploads/{{ product.illustration }}" class="img-fluid rounded-top" alt="{{ product.illustration }}">
-                    </a>
-                    <h5> {{ product.name }} </h5>
-                    <span class="product-subtitle"> {{ product.subtitle }} </span>
-                    <span class="product-price">{{ (product.price / 100)|number_format(2, ',','.') }} €</span>
+                                <a href="{{ path('app_product', { 'slug' : product.slug} ) }}">
+                                    <img src="/uploads/{{ product.illustration }}" class="img-fluid rounded-top" alt="{{ product.illustration }}"></a>
+                                <h5> {{ product.name }} </h5>
+                                <span class="product-subtitle"> {{ product.subtitle }} </span>
+                                <span class="product-price">{{ (product.price / 100)|number_format(2, ',','.') }} €</span>
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
                 </div>
+        
+        </div>
 
-			</div>
+	</div>
 
-		{% endfor %}
 
-	</div>>
+
 	
-	
-	Tous nos Produits
 {% endblock %}
