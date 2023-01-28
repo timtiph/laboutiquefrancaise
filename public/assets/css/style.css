@@ -41,3 +41,8 @@ body {
 .product-page-price {
     font-size: 19px;
 }
+
+.marketing > a{
+    text-decoration: underline;
+    color: #5a5a5a;
+}
