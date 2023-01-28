@@ -27,32 +27,28 @@ class CartController extends AbstractController
 
     public function index(Cart $cart): Response
     {
-        // code avant création de contion getFull();
-        // // Panier complet
-        // $cartComplete = [];
+    
+        // Panier complet
+        $cartComplete = [];
 
-        // if($cart->get()){
-
-            
-        //     // Enrichir le cartComplete de datas pris par Doctrine en BDD
-        //     // as $id(clé) => $qunatity(valeur)
-        //     foreach ($cart->get() as $id => $quantity) {
-        //         // a chaque itération, injete dans $cartComplete[] une nouvelle entrée avec plusieurs parametres
-        //         $cartComplete[] = [
-        //             // produit venant de la BDD via Doctrine et EntityManager intialisé par __construct, recherche du produit par $id produit
-        //             'product' => $this->entityManager->getRepository(Product::class)->findOneById($id), 
-        //             'quantity' => $quantity
-        //         ];
-        //     }
-        // }
+        // Enrichir le cartComplete de datas pris par Doctrine en BDD
+        // as $id(clé) => $qunatity(valeur)
+        foreach ($cart->get() as $id => $quantity) {
+            // a chaque itération, injete dans $cartComplete[] une nouvelle entrée avec plusieurs parametres
+            $cartComplete[] = [
+                // produit venant de la BDD via Doctrine et EntityManager intialisé par __construct, recherche du produit par $id produit
+                'product' => $this->entityManager->getRepository(Product::class)->findOneById($id), 
+                'quantity' => $quantity
+            ];
+        }
 
         return $this->render('cart/index.html.twig', [
         // on insert dans la vue le tableau $cart->get() du panier avec le couple id.produit + quantity
             //'cart' => $cart->get()
 
             // passer à la vue le tableau généré dans $cartComplete
-            'cart' => $cart->getFull()
-        ]);
+            'cart' => $cartComplete
+    ]);
     }
     
     
@@ -89,8 +85,8 @@ class CartController extends AbstractController
 
     }
 
-    /**
-     * retirer une sorte d'article du panier
+        /**
+     * Vider le panier
     */
 
     #[Route('/cart/delete/{id}', name: 'delete_to_cart')]
@@ -100,22 +96,6 @@ class CartController extends AbstractController
     {
         
         $cart->delete($id);
-        
-        return $this->redirectToRoute('app_cart');
-
-    }
-
-    /**
-     * retirer une quantité d'article du panier
-    */
-
-    #[Route('/cart/decrease/{id}', name: 'decrease_to_cart')]
-
-
-    public function decrease(Cart $cart, $id)  
-    {
-        
-        $cart->decrease($id);
         
         return $this->redirectToRoute('app_cart');
 

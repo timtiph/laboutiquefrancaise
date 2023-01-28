@@ -37,15 +37,8 @@
 							<th scope="row">{{ product.product.name }}<br>
 								<small>{{ product.product.subtitle }}</small>
 							</th>
-							<td>
-							<a href="{{ path('decrease_to_cart', { 'id' : product.product.id }) }}"> 
-								<img src="{{ asset('assets/img/minus.png') }}" alt="Diminuer la quantité" width="17px" class="mx-2">
-							</a>
-									{{ product.quantity }}
-							<a href=" {{ path('add_to_cart', { 'id' : product.product.id }) }} "> {# Fonction add() #}
-								<img src="{{ asset('assets/img/add.png') }}" alt="Augmenter la quantité" height="17px" class="mx-2">
-							</a>
-							</td>
+							<td>x
+								{{ product.quantity }}</td>
 							<td>{{ (product.product.price / 100)|number_format(2, ',','.') }}€</td>
 							<td>
 								<strong>
@@ -54,13 +47,16 @@
 							</td>
 							<td>
 								<a href=" {{ path('delete_to_cart', { 'id' : product.product.id }) }} ">
-									<img src="{{ asset('assets/img/delete.png') }}" alt="Supprimer mon produit" height="25px">
+									<img src="{{ asset('assets/img/delete.png') }}" alt="Supprimer mon produit - https://www.flaticon.com/free-icons/delete : Delete icons created by bqlqn - Flaticon" height="25px">
 								</a>
 							</td>
 						</tr>
 						{% set total = total + (product.product.price * product.quantity ) %}
 						{% set nbProducts = nbProducts + (product.quantity) %}
 					{% endfor %}
+
+					<a href="https://www.flaticon.com/fr/icones-gratuites/moins" title="moins icônes" class="visually-hidden">Moins icônes créées par inkubators - Flaticon</a>
+					<a href="https://www.flaticon.com/fr/icones-gratuites/plus" title="plus icônes" class="visually-hidden">Plus icônes créées par Smashicons - Flaticon</a>
 
 				</tbody>
 
