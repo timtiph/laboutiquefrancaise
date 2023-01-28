@@ -6,50 +6,81 @@
 {% block content %}
 	<h1>Mon Panier</h1>
 	retrouver tous les articles ajoutés dans votre panier
-	<div class="example-wrapper">
+
+	{% if cart|length > 0 %}
 
 
-		<table class="table mt-4">
+		<div class="example-wrapper">
 
-			<thead>
-				<tr>
-					<th scope="col">Produit</th>
-					<th scope="col"></th>
-					<th scope="col">Quantity</th>
-					<th scope="col">Prix</th>
-					<th scope="col">Total</th>
-				</tr>
-			</thead>
 
-			<tbody class="table-group-divider">
-				{% set total = null %}
-                {% set nbProducts = null %}
-                {% for product in cart %}
-		
+			<table class="table mt-4">
+
+				<thead>
 					<tr>
-                        <th><img src="/uploads/{{ product.product.illustration }}" alt="{{ product.product.name }}" height="100px"> </th>
-						<th scope="row">{{ product.product.name }}<br>
-						<small>{{ product.product.subtitle }}</small></th>
-						<td>x {{ product.quantity }}</td>
-						<td>{{ (product.product.price / 100)|number_format(2, ',','.') }}€</td>
-						<td><strong>
-                        {{ ((product.product.price * product.quantity ) / 100)|number_format(2, ',','.') }}€
-                        </strong>
-                        </td>
-						
+						<th scope="col">Produit</th>
+						<th scope="col"></th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Prix</th>
+						<th scope="col">Total</th>
+						<th scope="col"></th>
 					</tr>
-                    {% set total = total + (product.product.price * product.quantity ) %}
-                    {% set nbProducts = nbProducts + (product.quantity) %}
-				{% endfor %}
-			</tbody>
+				</thead>
 
-		</table>
-	</div>
-    <div class="text-right">
-    {# <b>Nombre d'articles : {{ cart|length }} </b> <br> Affichage du nombre de sorte de produits #}
-    <b>Nombre d'articles : {{ nbProducts }} </b> <br>
-    <b>Total de mon panier :  {{ (total / 100)|number_format(2, ',','.') }}€  </b>
-    <a href="#" class="btn btn-success btn-block mt-3 fw-bold"><strong>Valider mon panier</strong></a>
-    </div>
+				<tbody class="table-group-divider">
+					{% set total = null %}
+					{% set nbProducts = 0 %}
+					{% for product in cart %}
 
-{% endblock %}
+						<tr>
+							<th><img src="/uploads/{{ product.product.illustration }}" alt="{{ product.product.name }}" height="100px">
+							</th>
+							<th scope="row">{{ product.product.name }}<br>
+								<small>{{ product.product.subtitle }}</small>
+							</th>
+							<td>x
+								{{ product.quantity }}</td>
+							<td>{{ (product.product.price / 100)|number_format(2, ',','.') }}€</td>
+							<td>
+								<strong>
+									{{ ((product.product.price * product.quantity ) / 100)|number_format(2, ',','.') }}€
+								</strong>
+							</td>
+							<td>
+								<a href=" {{ path('delete_to_cart', { 'id' : product.product.id }) }} ">
+									<img src="{{ asset('assets/img/delete.png') }}" alt="Supprimer mon produit - https://www.flaticon.com/free-icons/delete : Delete icons created by bqlqn - Flaticon" height="25px">
+								</a>
+							</td>
+						</tr>
+						{% set total = total + (product.product.price * product.quantity ) %}
+						{% set nbProducts = nbProducts + (product.quantity) %}
+					{% endfor %}
+
+					<a href="https://www.flaticon.com/fr/icones-gratuites/moins" title="moins icônes" class="visually-hidden">Moins icônes créées par inkubators - Flaticon</a>
+					<a href="https://www.flaticon.com/fr/icones-gratuites/plus" title="plus icônes" class="visually-hidden">Plus icônes créées par Smashicons - Flaticon</a>
+
+				</tbody>
+
+			</table>
+		</div>
+		<div class="text-right">
+			{# <b>Nombre d'articles : {{ cart|length }} </b> <br> Affichage du nombre de sorte de produits #}
+			<b>Nombre d'articles :
+				{{ nbProducts }}
+				{# constante nombre de produits #}
+			</b>
+			<br>
+			<b>Total de mon panier :
+				{{ (total / 100)|number_format(2, ',','.') }}€
+			</b>
+			<a href="#" class="btn btn-success btn-block mt-3 fw-bold">
+				<strong>Valider mon panier</strong>
+			</a>
+		</div>
+
+        {% else %}
+            <hr>
+            <p class="fw-bold"><b>Votre panier est vide</b></p><br>
+            <a href=" {{ path('app_products') }} ">Nos produits</a>
+        {% endif %}
+
+	{% endblock %}
