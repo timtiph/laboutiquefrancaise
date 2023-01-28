@@ -17,10 +17,11 @@ class CartController extends AbstractController
 
     public function index(Cart $cart): Response
     {
-        dd($cart->get());
-
-
-    return $this->render('cart/index.html.twig');
+    
+        return $this->render('cart/index.html.twig', [
+        // on insert dans la vue le tableau $cart->get() du panier avec le couple id.produit + quantity
+            'cart' => $cart->get()
+    ]);
     }
     
     
