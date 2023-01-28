@@ -63,4 +63,18 @@ class Cart
         //return $this->session->remove('cart');
         return $this->requestStack->getSession()->remove('cart');
     }
+
+    public function delete($id)
+    {
+        // récup la session en cours
+        $session = $this->requestStack->getSession();
+
+        // récup l'objet cart dans un tableau, sinon renvoi un tableau vide
+        $cart = $session->get('cart', []);
+        
+        // on eleve l'entrée dans $cart qui a l'id $id
+        unset($cart[$id]);
+
+        return $this->requestStack->getSession()->set('cart', $cart);
+    }
 }
