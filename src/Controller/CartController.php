@@ -3,12 +3,22 @@
 namespace App\Controller;
 
 use App\Classe\Cart;
+use App\Entity\Product;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
+    
+    private $entityManager;
+    
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * Récapitulatif panier
     */
@@ -18,9 +28,26 @@ class CartController extends AbstractController
     public function index(Cart $cart): Response
     {
     
+        // Panier complet
+        $cartComplete = [];
+
+        // Enrichir le cartComplete de datas pris par Doctrine en BDD
+        // as $id(clé) => $qunatity(valeur)
+        foreach ($cart->get() as $id => $quantity) {
+            // a chaque itération, injete dans $cartComplete[] une nouvelle entrée avec plusieurs parametres
+            $cartComplete[] = [
+                // produit venant de la BDD via Doctrine et EntityManager intialisé par __construct, recherche du produit par $id produit
+                'product' => $this->entityManager->getRepository(Product::class)->findOneById($id), 
+                'quantity' => $quantity
+            ];
+        }
+
         return $this->render('cart/index.html.twig', [
         // on insert dans la vue le tableau $cart->get() du panier avec le couple id.produit + quantity
-            'cart' => $cart->get()
+            //'cart' => $cart->get()
+
+            // passer à la vue le tableau généré dans $cartComplete
+            'cart' => $cartComplete
     ]);
     }
     
