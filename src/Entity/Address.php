@@ -18,7 +18,7 @@ class Address
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $address_name = null;
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     private ?string $firstname = null;
@@ -63,12 +63,12 @@ class Address
 
     public function getName(): ?string
     {
-        return $this->address_name;
+        return $this->name;
     }
 
-    public function setName(string $address_name): self
+    public function setName(string $name): self
     {
-        $this->address_name = $address_name;
+        $this->name = $name;
 
         return $this;
     }
