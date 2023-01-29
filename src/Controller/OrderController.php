@@ -14,7 +14,10 @@ class OrderController extends AbstractController
     #[Route('/commande', name: 'app_order')]
     public function index(Cart $cart, Request $request): Response
     {
-        if (!$this->getUser()->getAddresses()->getValues()) {
+        // if (!$this->getUser()->getAddresses()->getValues()) {
+        //     return $this->redirectToRoute('app_account_address_add');
+        // } 
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_account_address_add');
         }
 
