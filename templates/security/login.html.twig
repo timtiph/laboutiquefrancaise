@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+<div class="block-small">
 	<form method="post">
 		{% if error %}
 			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -36,9 +37,12 @@
 		            </label>
 		        </div>
 		    #}
-		<hr>
-		<button class="btn btn-lg btn-primary btn-sm" type="submit">
+
+		<button class="btn btn-lg btn-info btn-block mt-5" type="submit">
 			Se connecter
 		</button>
+		<hr>
+		<p class="text-center mt-5">Ou souhaitez-vous <a href="{{ path('app_register') }}">créer un compte</a>?</p>
 	</form>
+</div>
 {% endblock %}
