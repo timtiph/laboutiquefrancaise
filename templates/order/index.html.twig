@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Valider ma commande | La Boutique Française
+{% endblock %}
+
+{% block content %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+	<h1>Je passe ma commande</h1>
+
+
+	<a href="{{path('app_cart')}}">Retourner à mon panier</a><br>
+
+	<hr>
+
+	<p>Choisissez vos preferences avant de passer votre commande sur la Boutique Française.</p>
+
+	<hr>
+
+	<div class="row">
+
+		<div class="col-md-6">
+            
+            {% set formHtml %}
+                {{ form(form) }}
+            {% endset %}
+            
+            {#Remplacer [br] par <br> + |raw : je veux que tu interprete le HTML #}
+            
+            {{ formHtml|replace({'[br]' : '<br>'})|raw }}  
+			
+		</div>
+
+		<div class="col-md-6">
+			<b>Récap de ma commande</b><br>
+			<b>Bouton pour payer</b>
+		</div>
+
+	</div>
+
+{% endblock %}
