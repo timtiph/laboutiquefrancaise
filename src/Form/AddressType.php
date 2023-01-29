@@ -71,7 +71,7 @@ class AddressType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Ajouter ma nouvelle adresse',
+                'label' => 'Valider',
                 'attr' => [
                     'class' => 'btn-block btn-info'
                 ]
