@@ -42,7 +42,11 @@ body {
     font-size: 19px;
 }
 
-.marketing > a{
-    text-decoration: underline;
-    color: #5a5a5a;
+.btn-address{
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: bold;
+
 }

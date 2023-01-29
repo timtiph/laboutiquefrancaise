@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une adresse | La Boutique Française
+{% endblock %}
+
+{% block content %}
+
+	<h1>Ajouter une adresse</h1>
+
+	<p>Vous pouvez renseigner une nouvelle adresse sur cette page.</p>
+	<br>
+	<a href="{{ path('app_account') }}">Mon compte</a>
+	<hr>
+
+	<pre>
+    {{ dump(app.user) }}
+</pre>
+
+
+
+
+	FORMULAIRE NOUVELLE ADRESSE
+
+
+
+{% endblock %}
