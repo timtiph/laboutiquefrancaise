@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block content %}
-{% form_theme form 'bootstrap_5_layout.html.twig' %}
+	{% form_theme form 'bootstrap_5_layout.html.twig' %}
 	<h1>Je passe ma commande</h1>
 
 
@@ -19,20 +19,44 @@
 	<div class="row">
 
 		<div class="col-md-6">
-            
-            {% set formHtml %}
-                {{ form(form) }}
-            {% endset %}
-            
-            {#Remplacer [br] par <br> + |raw : je veux que tu interprete le HTML #}
-            
-            {{ formHtml|replace({'[br]' : '<br>'})|raw }}  
-			
+
+			{% set formHtml %}
+			{{ form(form) }}
+				{% endset %}
+
+				{#Remplacer [br] par <br> + |raw : je veux que tu interprete le HTML #}
+
+				{{ formHtml|replace({'[br]' : '<br>'})|raw }}
+
 		</div>
 
 		<div class="col-md-6">
-			<b>Récap de ma commande</b><br>
-			<b>Bouton pour payer</b>
+			<div class="text-center">
+				<b>Récap de ma commande</b>
+				<p>Retrouvez le récapitulatif de vos produits</p>
+			</div>
+			<div class="order-sumary">
+				{% for key,product in cart %}
+
+					<div class="row {% if key > 0 %} mt-3 {% endif %}">
+						<div class="col my-auto">
+							<img src="/uploads/{{ product.product.illustration }}" alt="{{ product.product.name }}" height="100px">
+						</div>
+
+						<div class="col my-auto">
+							<b>
+								{{ product.product.name }}</b>
+							<br>
+							<small>{{ product.product.subtitle }}</small>
+						</div>
+
+						<div class="col my-auto">
+							X
+							{{ product.quantity }}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
 	</div>

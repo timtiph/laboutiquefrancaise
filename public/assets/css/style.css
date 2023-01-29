@@ -56,3 +56,19 @@ body {
     margin: 0 auto;
 
 }
+
+legend{
+    font-weight: bold;
+}
+
+.form-check {
+    background-color: #f4f8ff;
+    padding: 20px 65px;
+    margin-top: 10px;
+}
+
+.order-sumary{
+    background-color: #f4f8ff;
+    padding: 20px;
+    margin-top: 22px;
+}
