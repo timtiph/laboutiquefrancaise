@@ -27,7 +27,7 @@ class AccountAddressController extends AbstractController
     }
 
     /**
-     * Contionne les vues en fonction du panier : si vide ou pas 
+     * Conditionne les vues en fonction du panier : si vide ou pas 
      */
     #[Route('/compte/ajouter-une-adresse', name: 'app_account_address_add')]
     public function add(Cart $cart, Request $request): Response

@@ -105,7 +105,7 @@ class OrderController extends AbstractController
             
             // Mettre les données en BDD : persist $order + $orderDetails + flush
 
-            // $this->entityManager->flush();
+            $this->entityManager->flush();
 
 
             // dd('$date :', $date, '$carriers :', $carriers, '$delivery :', $delivery, '$delivery_content :', $delivery_content, '$order :' , $order, '$product : ', $product, '$orderDetails :', $orderDetails); // ok, tout fonctionne

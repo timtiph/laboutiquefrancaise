@@ -38,6 +38,7 @@ class Cart
 
 
         // récup la session en cours
+        // $session = $this->getSession();
         $session = $this->requestStack->getSession();
 
         // récup l'objet cart dans un tableau, sinon renvoi un tableau vide
