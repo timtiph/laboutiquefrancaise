@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+
 	<h1>Mon Panier</h1>
 	retrouver tous les articles ajoutés dans votre panier
 
@@ -47,10 +48,10 @@
 								<img src="{{ asset('assets/img/add.png') }}" alt="Augmenter la quantité" height="17px" class="mx-2">
 							</a>
 							</td>
-							<td>{{ (product.product.price / 100)|number_format(2, ',','.') }}€</td>
+							<td>{{ (product.product.price / 100)|number_format(2, ',','.') }} €</td>
 							<td>
 								<strong>
-									{{ ((product.product.price * product.quantity ) / 100)|number_format(2, ',','.') }}€
+									{{ ((product.product.price * product.quantity ) / 100)|number_format(2, ',','.') }} €
 								</strong>
 							</td>
 							<td>
@@ -81,6 +82,7 @@
 				<strong>Valider mon panier</strong>
 			</a>
 		</div>
+		<a href=" {{ path('app_products') }} " class="btn btn-info btn-block mt-5"><b>Continuez vos achats</b></a>
 
         {% else %}
             <hr>
