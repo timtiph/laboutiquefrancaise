@@ -46,7 +46,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/commande/recapitulatif', name: 'app_order_recap')]
+    #[Route('/commande/recapitulatif', name: 'app_order_recap', methods:'POST')]
     public function add(Cart $cart, Request $request): Response
     {
 
@@ -110,14 +110,16 @@ class OrderController extends AbstractController
 
             // dd('$date :', $date, '$carriers :', $carriers, '$delivery :', $delivery, '$delivery_content :', $delivery_content, '$order :' , $order, '$product : ', $product, '$orderDetails :', $orderDetails); // ok, tout fonctionne
 
-
+            return $this->render('order/add.html.twig', [
+                'cart' => $cart->getFull(),
+                'carriers' => $carriers,
+                'delivery_content' => $delivery_content
+            ]);
 
         };
 
+        return $this->redirectToRoute('app_cart');
 
-        //return $this->render('order/index.html.twig', [
-        return $this->render('order/add.html.twig', [
-               'cart' => $cart->getFull()
-        ]);
+
     }
 }
