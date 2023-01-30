@@ -8,8 +8,6 @@ use App\Entity\OrderDetails;
 use App\Form\OrderType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-
-;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,6 +104,8 @@ class OrderController extends AbstractController
             // Mettre les données en BDD : persist $order + $orderDetails + flush
 
             $this->entityManager->flush();
+
+            
 
 
             // dd('$date :', $date, '$carriers :', $carriers, '$delivery :', $delivery, '$delivery_content :', $delivery_content, '$order :' , $order, '$product : ', $product, '$orderDetails :', $orderDetails); // ok, tout fonctionne
