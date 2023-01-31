@@ -3,6 +3,10 @@
 {% block title %}Paiement de ma commande | La Boutique Française
 {% endblock %}
 
+{% block javascript %}
+	 <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
 {% block content %}
 	<h1>Mon récapitulatif de commande</h1>
 
@@ -34,7 +38,7 @@
                 <div class="d-flex flex-column">
                     <p>{{ carriers.name }}</p><br>
                     <p>{{ carriers.description }}</p><br>
-                    <p>{{ (carriers.price / 100)|number_format(2, ',','.') }} €</p>
+                    <p>{{ (carriers.price)|number_format(2, ',','.') }} €</p>
                 </div>
             </div>
 		</div>
@@ -78,7 +82,10 @@
 			<strong>Livraison : </strong>{{ carriers.price|number_format(2,',','.') }} €<hr>
 			<strong>Total à payer : </strong>{{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€
 
-			<a href="#" class="btn btn-success btn-block mt-3"><strong>Payer | {{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€</strong></a>
+			<form action=" {{ path('app_stripe_create_session') }} " method="POST">
+
+				<a href=" {{ path('app_stripe_create_session') }}" id="checkout-button" class="btn btn-success btn-block mt-3"><strong>Payer | {{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€</strong></a>
+      		</form>
 		</div>
 
 	</div>

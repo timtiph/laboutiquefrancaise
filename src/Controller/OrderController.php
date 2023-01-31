@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends AbstractController
 {
-    
+
     private $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -44,7 +44,7 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/commande/recapitulatif', name: 'app_order_recap', methods:'POST')]
+    #[Route('/commande/recapitulatif', name: 'app_order_recap', methods: 'POST')]
     public function add(Cart $cart, Request $request): Response
     {
 
@@ -55,43 +55,44 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             //$date = \new DateTime();
             $date = new DateTime(); // Attention au 'use DateTime;' au dessus
             $carriers = $form->get('carriers')->getData();
             $delivery = $form->get('addresses')->getData();
 
             // récup dans une variable les details du USER.
-            $delivery_content = $delivery->getFirstname().' '.$delivery->getLastname();
+            $delivery_content = $delivery->getFirstname() . ' ' . $delivery->getLastname();
             // $delivery_content .= '<br>'.$delivery->getPhone(); ATTENTION A BIEN METTRE LE .= pour récup toutes les datas cumulées dans $delivery_content (sinon, il n'y aura que le dernier get appelé)
-            $delivery_content .= '<br>'.$delivery->getPhone();
-            
+            $delivery_content .= '<br>' . $delivery->getPhone();
+
             if ($delivery->getCompagny()) {
-                $delivery_content .= '<br>'.$delivery->getCompagny();
+                $delivery_content .= '<br>' . $delivery->getCompagny();
             }
 
-            $delivery_content .= '<br>'.$delivery->getAddress();
-            $delivery_content .= '<br>'.$delivery->getPostal().' '.$delivery->getCity();
-            $delivery_content .= '<br>'.$delivery->getCountry();
-            
-            
+            $delivery_content .= '<br>' . $delivery->getAddress();
+            $delivery_content .= '<br>' . $delivery->getPostal() . ' ' . $delivery->getCity();
+            $delivery_content .= '<br>' . $delivery->getCountry();
+
+
             // enregistrement de la pré-commande Order()
             $order = new Order();
-            
+
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
             $order->setIsPaid(0);
-            
+
             $this->entityManager->persist($order);
+
 
             // enregistrement des produits de la précommande OrderDetails()
 
             // Pour chaque nouvelle entrée je veux que tu fasse une nouvelle entrée dans OrderDetails() + fait le lien entre OrderDetails() et Order();
             foreach ($cart->getFull() as $product) {
-            
+
                 $orderDetails = new OrderDetails;
                 $orderDetails->setMyOrder($order);
                 $orderDetails->setProduct($product['product']->getName());
@@ -99,13 +100,20 @@ class OrderController extends AbstractController
                 $orderDetails->setPrice($product['product']->getPrice());
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->entityManager->persist($orderDetails);
+
+
             }
-            
-            // Mettre les données en BDD : persist $order + $orderDetails + flush
 
-            $this->entityManager->flush();
+            // dd($product_for_stripe); // ok, les elements du panier remontes
 
-            
+            // Mettre les données en BDD : persist $order + $orderDetails + flush les 2$
+
+            //$this->entityManager->flush();
+
+
+            // dump($checkout_session->id);
+            // dd($checkout_session);
+
 
 
             // dd('$date :', $date, '$carriers :', $carriers, '$delivery :', $delivery, '$delivery_content :', $delivery_content, '$order :' , $order, '$product : ', $product, '$orderDetails :', $orderDetails); // ok, tout fonctionne
@@ -115,11 +123,8 @@ class OrderController extends AbstractController
                 'carriers' => $carriers,
                 'delivery_content' => $delivery_content
             ]);
-
         };
 
         return $this->redirectToRoute('app_cart');
-
-
     }
 }
