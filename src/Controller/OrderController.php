@@ -77,6 +77,9 @@ class OrderController extends AbstractController
 
             // enregistrement de la pré-commande Order()
             $order = new Order();
+            $reference = $date->format('Ymd'.'-'.uniqid());
+            $order->setReference($reference);
+            //dd($reference);
 
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
@@ -104,25 +107,26 @@ class OrderController extends AbstractController
 
             }
 
+            //dd($order);
+
             // dd($product_for_stripe); // ok, les elements du panier remontes
 
             // Mettre les données en BDD : persist $order + $orderDetails + flush les 2$
 
-            //$this->entityManager->flush();
+            $this->entityManager->flush();
 
 
             // dump($checkout_session->id);
             // dd($checkout_session);
-
-
-
-            // dd('$date :', $date, '$carriers :', $carriers, '$delivery :', $delivery, '$delivery_content :', $delivery_content, '$order :' , $order, '$product : ', $product, '$orderDetails :', $orderDetails); // ok, tout fonctionne
+           // dd('$date :', $date, '$carriers :', $carriers, '$delivery :', $delivery, '$delivery_content :', $delivery_content, '$order :' , $order, '$product : ', $product, '$orderDetails :', $orderDetails, 'REFERENCE', $reference); // ok, tout fonctionne
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),
                 'carriers' => $carriers,
-                'delivery_content' => $delivery_content
+                'delivery_content' => $delivery_content,
+                'reference' => $reference
             ]);
+            dd($order);
         };
 
         return $this->redirectToRoute('app_cart');
