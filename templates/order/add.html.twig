@@ -38,7 +38,7 @@
                 <div class="d-flex flex-column">
                     <p>{{ carriers.name }}</p><br>
                     <p>{{ carriers.description }}</p><br>
-                    <p>{{ (carriers.price)|number_format(2, ',','.') }} €</p>
+                    <p>{{ (carriers.price / 100)|number_format(2, ',','.') }} €</p>
                 </div>
             </div>
 		</div>
@@ -79,12 +79,12 @@
 
 			<hr>
 			<strong>Sous-Total : </strong>{{ (total / 100)|number_format(2, ',','.') }} €<br>
-			<strong>Livraison : </strong>{{ carriers.price|number_format(2,',','.') }} €<hr>
-			<strong>Total à payer : </strong>{{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€
+			<strong>Livraison : </strong>{{ (carriers.price / 100)|number_format(2,',','.') }} €<hr>
+			<strong>Total à payer : </strong>{{ ((total / 100) + (carriers.price / 100))|number_format(2, ',','.') }}	€
 
 			{# <form action=" {{ path('app_stripe_create_session', {'id': 25}) }} " method="POST"> #}
 			{% if reference %}
-				<a href=" {{ path('app_stripe_create_session', {'reference': reference}) }}" id="checkout-button" class="btn btn-success btn-block mt-3"><strong>Payer | {{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€</strong></a>
+				<a href=" {{ path('app_stripe_create_session', {'reference': reference}) }}" id="checkout-button" class="btn btn-success btn-block mt-3"><strong>Payer | {{ ((total / 100) + (carriers.price / 100))|number_format(2, ',','.') }}	€</strong></a>
 			{% else %}
 				<p>Un probleme est survenu. <a href="{{path('app_cart')}}"><b>Cliquer ici.</b></a></p>
       		{% endif %}
