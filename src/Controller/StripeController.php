@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Classe\Cart;
 use App\Entity\Order;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -22,45 +23,52 @@ class StripeController extends AbstractController
     #[Route('/commande/create-session/{reference}', name: 'app_stripe_create_session')]
     public function index(Cart $cart, $reference)// : Response
     {
-        dd($reference);
+        //dd($reference);
         $product_for_stripe = []; // array pour récup les details du panier
         $MY_DOMAIN = 'https://127.0.0.1:8000'; // var nom de domaine
 
-        $order = $this->entityManager->getRepository(Order::class)->findOneByReference($reference); #je lui demande de me trouver en BDD l'enregistrement par sa référence
+        $order = $this->entityManager->getRepository(Order::class)->findOneByReference($reference); //je lui demande de me trouver en BDD l'enregistrement par sa référence
         
-        dd($order);
-
-        if(!$order){ # si la référence n'existe pas, alors order n'existe pas
+        if(!$reference){ # si la référence n'existe pas, alors order n'existe pas
             // new JsonResponse(['error'=>'order']);
             return $this->redirectToRoute('app_order');
 
         } else {
 
-            
-            
-            foreach ($cart->getFull() as $product) {
-                
+            foreach ($order->getOrderDetails()->getValues() as $product) {
+                $product_object = $this->entityManager->getRepository(Product::class)->findOneByName($product->getProduct()); //création objet product pour récup toutes les infos
                 $product_for_stripe[] = [
                 'price_data' => [
                     'currency' => 'eur',
-                    'unit_amount' => $product['product']->getPrice(),
+                    'unit_amount' => $product->getPrice(),
                     'product_data' => [
-                        'name' => $product['product']->getName(),
-                        'images' => [$MY_DOMAIN."/uploads/".$product['product']->getIllustration()]
+                        'name' => $product->getProduct(),
+                        'images' => [$MY_DOMAIN."/uploads/".$product_object->getIllustration()]
                         
                     ],
                 ],
-                'quantity' => $product['quantity'],
+                'quantity' => $product->getQuantity(),
             ];
-            
+
         }
-        
-        
+            $product_for_stripe[] = [
+            'price_data' => [
+                'currency' => 'eur',
+                'unit_amount' => $order->getCarrierPrice() * 100,
+                'product_data' => [
+                    'name' => $order->getCarrierName(),
+                    'images' => [$MY_DOMAIN],
+                    ],
+                ],
+            'quantity' => 1,
+            ];
+
         Stripe::setApiKey('sk_test_51MVySHKFjf7KItaigS7ZDPnSrxJOnEm7wzeGLjuNY2cUp06if1NxXclOXlZJwogXeb84papT2ra2ZRmwieaYL89X0042laGGeo');
         //header('Content-Type: application/json');
         
         
         $checkout_session = Session::create([
+            'customer_email' => $this->getUser()->getEmail(),
             'line_items' => [
                 $product_for_stripe
             ],
@@ -72,12 +80,12 @@ class StripeController extends AbstractController
         // Renvoyer une réponse en JSON
         // $response = new JsonResponse(['id'=>$checkout_session->id]);
         // return $response;
-        // dd($checkout_session->url);
+
+        // dd($checkout_session->url); ok ça fonctionne
         
         // header("HTTP/1.1 303 See Other");
         // header("Location: " . $checkout_session->url);
-        
-        //$url_strip = $checkout_session->url;
+
         return $this->redirect($checkout_session->url);
         
         }   

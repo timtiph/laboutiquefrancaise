@@ -83,8 +83,12 @@
 			<strong>Total à payer : </strong>{{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€
 
 			{# <form action=" {{ path('app_stripe_create_session', {'id': 25}) }} " method="POST"> #}
+			{% if reference %}
 				<a href=" {{ path('app_stripe_create_session', {'reference': reference}) }}" id="checkout-button" class="btn btn-success btn-block mt-3"><strong>Payer | {{ ((total / 100) + carriers.price)|number_format(2, ',','.') }}	€</strong></a>
-      		{# </form> #}
+			{% else %}
+				<p>Un probleme est survenu. <a href="{{path('app_cart')}}"><b>Cliquer ici.</b></a></p>
+      		{% endif %}
+			{# </form> #}
 		</div>
 
 	</div>
