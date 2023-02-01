@@ -21,7 +21,7 @@ class StripeController extends AbstractController
     }
 
     #[Route('/commande/create-session/{reference}', name: 'app_stripe_create_session')]
-    public function index(Cart $cart, $reference)// : Response
+    public function index($reference, )// : Response
     {
         //dd($reference);
         $product_for_stripe = []; // array pour récup les details du panier
@@ -73,23 +73,27 @@ class StripeController extends AbstractController
                 $product_for_stripe
             ],
             'mode' => 'payment', // paiement 1 shot
-            'success_url' => $MY_DOMAIN . '/success.html',
-            'cancel_url' => $MY_DOMAIN . '/cancel.html',
+            'success_url' => $MY_DOMAIN . '/commande/merci/{CHECKOUT_SESSION_ID}', // {CHECKOUT_SESSION_ID} permet de récup le detail de la commande depuis stripe pour le merci (ou le erreur)
+            'cancel_url' => $MY_DOMAIN . '/commande/erreur/{CHECKOUT_SESSION_ID}',
         ]);
+
+        $order->setStripeSessionId($checkout_session->id);
+
+        $this->entityManager->flush();
         
         // Renvoyer une réponse en JSON
         // $response = new JsonResponse(['id'=>$checkout_session->id]);
         // return $response;
-
+        
         // dd($checkout_session->url); ok ça fonctionne
         
         // header("HTTP/1.1 303 See Other");
         // header("Location: " . $checkout_session->url);
-
+        
         return $this->redirect($checkout_session->url);
         
         }   
-        
-        
+    
+    
     }
 }
