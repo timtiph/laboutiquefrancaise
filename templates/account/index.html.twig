@@ -3,13 +3,17 @@
 {% block title %}Mon compte | La Boutique Française{% endblock %}
 
 {% block content %}
-<h1>Mon comte</h1>
+<h1>Mon compte</h1>
 
 Bienvenue {{ app.user.firstname }} dans votre compte. Gérez vos informations depuis cet espace
 
 <hr>
-
- <a href="{{path('app_account_password')}}">Modifier mon mot de passe</a><br>
- <a href="{{path('app_account_address')}}">Gérer mes adresses</a><br>
- 3. page gestion de commande<br>
+    <div class="d-flex justify-content-around my-5">
+        <a href="{{path('app_account_password')}}" class="btn btn-outline-info btn-block w-25 m-0">Modifier mon mot de passe</a>
+        <a href="{{path('app_account_address')}}"  class="btn btn-outline-info btn-block w-25 m-0">Gérer mes adresses</a>
+        <a href="{{path('app_account_order')}}"    class="btn btn-outline-info btn-block w-25 m-0">Mes commandes</a>
+    </div>
+    <div class="d-flex justify-content-around">
+        <a href="{{path('app_products')}}"    class="btn btn-info btn-block w-25 m-0"><b>Nos produits</b></a>
+    </div>
 {% endblock %}
