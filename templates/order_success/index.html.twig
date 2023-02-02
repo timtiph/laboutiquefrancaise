@@ -15,8 +15,13 @@
         <b>{{ order.delivery|raw }}</b>
     <hr>
 
-        Pour suivre votre commande, rendez-vous dans votre <a href="{{path('app_account_order')}}">compte</a>.
-    
+
+        {# Pour suivre votre commande, rendez-vous dans votre <a href="{{path('app_account_order')}}">compte</a>. #}
     </p>
 
+    <div class="d-flex flex-row justify-content-start">
+	    <h6 class="my-auto mr-5">Pour suivre votre commande, rendez-vous dans </h6>
+            <a href="{{ path('app_account_order') }}" class="btn btn-outline-info btn-block my-auto w-25">Mes commandes</a>
+    </div>
+    
 {% endblock %}
