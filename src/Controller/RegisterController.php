@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classe\Mail;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,6 +26,8 @@ class RegisterController extends AbstractController
 
     public function index(Request $request, PersistenceManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher ): Response
     {
+        $notification = null;
+        
         // Création du formulaire pour la page register
 
         // instense d'un nouvel obj User
@@ -39,23 +42,42 @@ class RegisterController extends AbstractController
 
             $user = $form->getData(); // injecte dans obj $user toutes les données récup dans $form
 
-            // Hasher le password
-            $password = $passwordHasher->hashPassword($user, $user->getPassword());
+            //vérifier si l'utilisateur existe déjà
+            $search_email = $this->entityManager->getRepository(User::class)->findOneByEmail($user->getEmail());
 
-            // dd($password); //dd = varDumpDie
-            
-            $user->setPassword($password);
 
-            // pour enregistrer les infos dans la base avec doctrine
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            if(!$search_email) { //si la recherche est nulle alors 
+
+                
+                // Hasher le password
+                $password = $passwordHasher->hashPassword($user, $user->getPassword());
+                
+                // dd($password); //dd = varDumpDie
+                
+                $user->setPassword($password);
+                
+                // pour enregistrer les infos dans la base avec doctrine
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                $mail = new Mail(); //Envoi d'un mail au client suite inscription
+                $title = "Bienvenu sur la premiere boutique dédiée au 100% Made in France";
+                $content = "Bonjour ".$user->getFirstname()."Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil atque at, similique ipsum eos dignissimos id deleniti rerum eveniet nisi necessitatibus ab quos iure, alias reprehenderit quam cum corrupti commodi.";
+                $mail->send($user->getEmail(), $user->getFirstname(), "Bienvenu sur La Boutique Française.", $title, $content);
+                
+                $notification = "Votre inscription s'est correctement déroulée. Vous pouvez dors et déjà vous connecter à votre compte.";
+                
+            } else {
+                $notification = "L'email que vous avez renseigné existe déjà !!";
+            }
 
         }
 
         // passer le formulaire en variable au template    
             return $this->render('register/index.html.twig', [
-                'form' => $form->createView() // $form = formulaire créé + méthode createview pour l'envoyer dans la vue ou il sera appelé
+                'form' => $form->createView(), // $form = formulaire créé + méthode createview pour l'envoyer dans la vue ou il sera appelé
+                'notification' => $notification
             ]);
     }
 }

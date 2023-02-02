@@ -24,12 +24,22 @@ twig:
 
 <h1>Inscription</h1>
 
+{% if notification %}
+<div class="d-flex">
+    <div class="alert alert-info"> {{ notification }}</div>
+    <hr>
+</div>
+{% endif %}
 
 {# récupération du formulaire créé sous src/Controller/RegisterController.php 
 Appel d'une variable construite par la méthode form, et en appelant form du RegisterController
 #}
 
 {{form(form)}}
+
+{% if form %}
+{% endif %}
+
 
 {# Formulaire généré par src/Form/RegisterType.php. Les champs sont directement intégrer à cette vue depuis le registerType. Permet le management du formulaire
 Pour améliorer le CSS : <https://symfony.com/doc/current/forms.html #}

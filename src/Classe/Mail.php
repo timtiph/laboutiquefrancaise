@@ -11,7 +11,7 @@ class Mail
     private $api_key_secret = '268b1457ee456c026760d2fc8fb41c10';
     
     
-    public function send($to_email, $to_name, $subject, $content)
+    public function send($to_email, $to_name, $subject, $title, $content)
     {
         $apikey = getenv('MJ_APIKEY_PUBLIC');
         $apisecret = getenv('MJ_APIKEY_PRIVATE');
@@ -36,6 +36,7 @@ class Mail
                 'TemplateLanguage' => true,
                 'Subject' => $subject,
                 'variables' => [
+                    'title' => $title,
                     'content' => $content,
                 ]
 
@@ -46,6 +47,6 @@ class Mail
             ]
           ];
           $response = $mj->post(Resources::$Email, ['body' => $body]); // on passe le corps du mail à $mj->post pour qu'il l'envoi
-          $response->success() && dd($response->getData()); // on regarde la réponse
+          $response->success(); // on regarde la réponse
     }
 }
