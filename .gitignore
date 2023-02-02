@@ -23,7 +23,7 @@
 
 ### .env
 .env
-
+.env.test
 
 ### Requete SQL
 /reqSQL
