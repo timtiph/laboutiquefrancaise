@@ -29,7 +29,7 @@ class OrderController extends AbstractController
         // if (!$this->getUser()->getAddresses()->getValues()) {
         //     return $this->redirectToRoute('app_account_address_add');
         // } 
-        if (!$this->getUser()) {
+        if (!$this->getUser()->getAddresses()->getValues()) {
             return $this->redirectToRoute('app_account_address_add');
         }
 

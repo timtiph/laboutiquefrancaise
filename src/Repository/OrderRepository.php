@@ -39,9 +39,37 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * findSuccessOrders(), 
+     * Permet d'afficher les SuccessCommandes dans l'espace membre de l'utilisateur
+     */
+
+     public function findSuccessOrders($user)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.isPaid = 1')
+            ->andWhere('o.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('o.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    // [SELECT * FROM `order` 
+    // JOIN `user`
+    
+    // WHERE `order`.`is_paid`=1  
+    
+    // AND `user`.`id`    = `order`.`user_id`
+    
+    // ORDER BY `order`.`id` ASC;]
+
+
+
+
 //    /**
 //     * @return Order[] Returns an array of Order objects
-//     */
+//      */
 //    public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('o')
