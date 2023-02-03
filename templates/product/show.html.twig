@@ -8,8 +8,7 @@
 {% block content %}
 
 
-	<div class="row">
-
+	<div class="d-flex">
 
 		<div class="col-md-5">
 			<img src="/uploads/{{ product.illustration }}" class="img-fluid rounded-top" alt="{{ product.illustration }}">
@@ -17,15 +16,34 @@
 
 		<div class="col-md-7 my-auto">
 			<h3>{{ product.name }}</h3>
-			<p> {{ product.subtitle }} </p>
+			<p>
+				{{ product.subtitle }}
+			</p>
 			<span class="product-page-price">{{ (product.price / 100)|number_format(2, ',','.') }}€</span>
 			<hr>
-			<p>	{{ product.description }}</p>
-			
+			<p>
+				{{ product.description }}</p>
+
 			<a href="{{ path('add_to_cart', { 'id' : product.id }) }}" class="btn btn-primary">Ajouter au panier</a>
 		</div>
 
+	</div> <!-- /.d-flex -->
 
-	</div>>
+	<hr>
+	<h3>Nos meilleures ventes</h3>
+	<p>Découvrez nos produits les plus vendus</p>
 
-</div>>{% endblock %}
+	<div class="d-flex m-auto justify-content-center">
+
+		{% for product in products %}
+
+			<div class="d-flex m-5 p-3">
+				{% include "product/single_product.html.twig" %}
+			</div>
+			<!-- /.d-flex -->
+
+		{% endfor %}
+
+	</div> <!-- /.d-flex -->
+	
+{% endblock %}
