@@ -36,3 +36,6 @@
 
 ### dossier photos uploads
 /public/uploads
+
+### dossier secret
+config/secrets
