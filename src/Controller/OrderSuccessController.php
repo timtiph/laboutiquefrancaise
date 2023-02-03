@@ -29,11 +29,11 @@ class OrderSuccessController extends AbstractController
             return $this->redirectToRoute('app_home'); // tu n'as pas le droit d'accéder et tu es redirigé
         }
 
-        if (!$order->isIsPaid()){ // modifier le statut isPaid à 1 SAUF s'il est deja à 1
+        if (!$order->getState()){ // modifier le statut isPaid à 1 SAUF s'il est deja à 1
             // vider la session cart
             $cart->remove();
             // Modifier le statut isPaid de la commande en mettant 1. Systeme de webhook via stripe avec "ok le paiement est bien passé", donc tu peux appeler une URL
-            $order->setIsPaid(1);
+            $order->setState(1);
             $this->entityManager->flush();
             // envoyer un mail au client pour lui confirmer sa commande suite à la validation du paiement
             $mail = new Mail(); //Envoi d'un mail au client suite inscription
