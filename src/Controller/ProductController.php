@@ -61,12 +61,15 @@ class ProductController extends AbstractController
         $product = $this->entityManager->getRepository(Product::class)->findOneBySlug($slug);
         // dd($product); //=> $product est chargée grace à findOneBySlug() qui est égal à "SELECT * FROM product WHERE slug = $slug"</g>
 
+        $products = $this->entityManager->getRepository(Product::class)->findByIsBest(1); // Passé les produits best à la vue Show
+
         if(!$product) { // si tu ne trouve pas de produit, redirect to app_products
             return $this->redirectToRoute('app_products');
         }
 
         return $this->render('product/show.html.twig', [
             'product' => $product, // passer tous les produits à twig
+            'products' => $products, // passer les produits isBest à twig
         ]);
     }
 }
