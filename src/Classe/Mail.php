@@ -11,7 +11,7 @@ class Mail
     private $api_key_secret = '268b1457ee456c026760d2fc8fb41c10';
     
     
-    public function send($to_email, $to_name, $subject, $title, $content)
+    public function send($to_email, $to_name, $subject, $content)
     {
         $apikey = getenv('MJ_APIKEY_PUBLIC');
         $apisecret = getenv('MJ_APIKEY_PRIVATE');
@@ -36,7 +36,6 @@ class Mail
                 'TemplateLanguage' => true,
                 'Subject' => $subject,
                 'variables' => [
-                    'title' => $title,
                     'content' => $content,
                 ]
 
