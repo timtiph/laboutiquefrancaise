@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block content %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
 	<div class="block-small">
 
 		{% for message in app.flashes('notice') %}
@@ -11,16 +12,10 @@
 				{{ message }}
 			</div>
 		{% endfor %}
-
-		<form method="post">
+		
 			<h1 class="h3 mb-3 font-weight-normal">Réinitialiser mon mot de passe</h1>
-			<label for="inputEmail">Votre Email</label>
-			<input type="email" value="" name="email" id="inputEmail" class="form-control" autocomplete="email" placeholder="Votre adresse email" required autofocus>
 
-			<button class="btn btn-lg btn-info btn-block mt-5" type="submit">Valider</button>
-			<hr>
-			<p class="text-center mt-5">Ou souhaitez-vous
-				<a href="{{ path('app_login') }}">vous connecter</a>?</p>
-		</form>
+		{{ form(form) }}
+
 	</div>
 {% endblock %}
