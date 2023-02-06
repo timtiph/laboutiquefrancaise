@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous contacter | La Boutique Française
+{% endblock %}
+
+
+{% block content %}
+
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+    <div class="d-flex">
+        <div class="col-md-8 border border-info">
+            <h1>Formulaire de contact</h1>
+
+        {% for message in app.flashes('notice') %}
+			<div class="alert alert-info">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+            <div class="mt-5">
+                {{ form(form) }}
+            </div>
+        </div>    
+        
+        
+        <div class="col-md-4 bg-info mx-3 py-5">
+            <div class="d-flex flex-column text-light p-3 justify-content-around align-items-center">
+                <h3 class="mb-5">La Boutique Française</h3>
+
+                <div class="d-flex flex-column m-auto justify-content-around">
+                    <p>Téléphone : <br><b> 06 10 20 30 40</b></p>
+                    <p>Courriel : <br> <b>contact.laboutiquefrancaise@gmail.com</b></p>
+                    <p>Adresse : <br> <b>Rue de la Paterne - 25000 BESANÇON</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
