@@ -8,9 +8,11 @@ use App\Entity\User;
 use App\Form\ResetPasswordType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ResetPasswordController extends AbstractController
@@ -69,7 +71,7 @@ class ResetPasswordController extends AbstractController
 
 
     #[Route('/modifier-mon-mot-de-passe/{token}', name: 'app_update_password')]
-    public function update(Request $request, $token): Response
+    public function update(Request $request, $token, PersistenceManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher): Response
     {
         // dd($token); // ok, récupere bien le token avec l'adresse mail dans le mail envoyé
         $reset_password = $this->entityManager->getRepository(ResetPassword::class)->findOneByToken($token); // on récupere le token et le user associé
@@ -93,11 +95,31 @@ class ResetPasswordController extends AbstractController
 
         $form = $this->createForm(ResetPasswordType::class);
         $form->handleRequest($request);
-        return $this->render('reset_password/update.html.twig');
 
-        // hash des mots de passe
-        // Flush en BDD
-        // redirection de l'utilisateur vers la page de connexion
+        if ($form->isSubmitted() && $form->isValid()){
+            // $new_pwd = $form->get('new_password'); // récupere les données saisies dans le formulaire
+            
+            $new_pwd = $form->get('new_password')->getData(); // récupere les données saisies dans le formulaire
+            
+            // hash des mots de passe
+            $user = $reset_password->getUser(); // récupere le User associé
+            // dd($new_pwd);
+
+            $user->setPassword($passwordHasher->hashPassword($user, $new_pwd));
+            $entityManager = $doctrine->getManager();
+            
+            // Flush en BDD
+            $entityManager->flush();
+            
+            // redirection de l'utilisateur vers la page de connexion
+            $this->addFlash('notice', 'Votre mot de passe à bien été mis à jour.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('reset_password/update.html.twig', [
+            'form' => $form->createView()
+        ]);
+
         
         dd($reset_password);
         
